@@ -66,7 +66,8 @@ do_print "Disabling DHCP."
 do_cmd "/usr/bin/virsh net-destroy default"
 do_cmd "/usr/bin/virsh net-define default-new.xml"
 do_cmd "/usr/bin/virsh net-start default"
-do_cmd "/usr/bin/virsh reboot maas1"
+do_cmd "/usr/bin/virsh destroy maas1"
+do_cmd "/usr/bin/virsh start maas1"
 
 do_print "Waiting for MAAS1. Pinging it..."
 
