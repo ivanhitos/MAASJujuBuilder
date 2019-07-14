@@ -95,6 +95,8 @@ set -- "${POSITIONAL[@]}" # restore positional parameters
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 LBLUE='\033[1;34m'
+LYELLOW='\033[1;33m'
+
 NC='\033[0m'
 
 
@@ -116,6 +118,11 @@ do_cmd()
 do_print()
 {
     echo -e "${GREEN} - ${HOST} - $(date) - ${LBLUE} $@ ${NC}" | tee -a ${LOG} 2>&1
+}
+
+do_print_important()
+{
+    echo -e "${GREEN} - ${HOST} - $(date) - ${LYELLOW} $@ ${NC}" | tee -a ${LOG} 2>&1
 }
 
 do_print_error_exit()
