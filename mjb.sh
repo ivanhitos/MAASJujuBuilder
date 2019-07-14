@@ -64,10 +64,15 @@ do_print "Disabling DHCP."
 sleep 200
 /usr/bin/virsh net-dumpxml default > default.xml
 /usr/bin/xmlstarlet edit --delete "/network/ip/dhcp" default.xml > default-new.xml
+sleep 5
 do_cmd "/usr/bin/virsh net-destroy default"
+sleep 5
 do_cmd "/usr/bin/virsh net-define default-new.xml"
+sleep 5
 do_cmd "/usr/bin/virsh net-start default"
+sleep 5
 do_cmd "/usr/bin/virsh destroy maas1"
+sleep 5
 do_cmd "/usr/bin/virsh start maas1"
 
 do_print "Waiting for MAAS1. Pinging it..."
