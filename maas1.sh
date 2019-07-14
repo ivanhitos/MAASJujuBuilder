@@ -46,9 +46,6 @@ do_cmd "sudo apt update"
 do_cmd "sudo apt install maas -y"
 do_cmd "sudo snap install juju --classic"
 
-sleep 10
-source .profile
-
 
 echo " 
 clouds:
@@ -58,10 +55,10 @@ clouds:
         endpoint: http://${FINALIPMAAS1}:5240/MAAS
 " > cloud.yaml
 
-do_cmd "juju add-cloud myMAAS cloud.yaml"
+do_cmd "/snap/bin/juju add-cloud myMAAS cloud.yaml"
 
-do_cmd "sudo maas createadmin --username=ubuntu --password=${PASSWORD} --email=root@localhost --ssh-import=lp:${LPUSERNAME}"
-maaskey=$(sudo maas-region apikey --username=ubuntu)
+do_cmd "sudo /usr/bin/maas createadmin --username=ubuntu --password=${PASSWORD} --email=root@localhost --ssh-import=lp:${LPUSERNAME}"
+maaskey=$(sudo /usr/bin/maas-region apikey --username=ubuntu)
 
 echo "
 credentials:
@@ -73,8 +70,8 @@ credentials:
 
 perl -pi -e ""s/XXXXX/$maaskey/g"" maas.yaml
 
-do_cmd "juju add-credential myMAAS -f maas.yaml"
-do_cmd "maas login ubuntu http://${FINALIPMAAS1}:5240/MAAS/ $maaskey"
+do_cmd "/snap/bin/juju add-credential myMAAS -f maas.yaml"
+do_cmd "/usr/bin/maas login ubuntu http://${FINALIPMAAS1}:5240/MAAS/ $maaskey"
 #do_cmd "maas ubuntu maas set-config name=http_proxy value=http://squid.internal:3128"
 do_cmd "/usr/bin/maas ubuntu ipranges create type=dynamic start_ip=${MAAS_STARTDHCP} end_ip=${MAAS_ENDDHCP} comment=\'This is a reserved dynamic range\'"
 do_cmd "/usr/bin/maas ubuntu vlan update fabric-0 untagged dhcp_on=True primary_rack=maas1"
@@ -87,9 +84,9 @@ setfacl -m maas:rwx "$SSH_AUTH_SOCK"
 do_cmd "sudo -E -s -u maas -H sh -c \"/usr/bin/ssh-copy-id -i ~/.ssh/id_rsa -oStrictHostKeyChecking=no ${QEMUHYPERVISOR_USER}@${QEMUHYPERVISOR_IP}\""
 do_cmd "/usr/bin/maas ubuntu pods create name=pod1 type=virsh power_address=qemu+ssh://${QEMUHYPERVISOR_USER}@{QEMUHYPERVISOR_IP}/system"
 
-while [ "$(maas ubuntu boot-resources is-importing|tail -n 1)." != "false." ]
+while [ "$(/usr/bin/maas ubuntu boot-resources is-importing|tail -n 1)." != "false." ]
 do
  sleep 10
 done
 
-do_cmd "juju bootstrap myMAAS myMAAS-controller --bootstrap-constraints \"mem=2G\""
+do_cmd "/snap/bin/juju bootstrap myMAAS myMAAS-controller --bootstrap-constraints \"mem=2G\""

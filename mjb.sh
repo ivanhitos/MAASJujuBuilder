@@ -54,4 +54,5 @@ do_print "MAAS1 is now reachable."
 do_print "Installing MAAS components... Check logs on MAAS server ${IPMAAS1}, that it will be changed to ${FINALIPMAAS1}"
 do_cmd "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ubuntu@${IPMAAS1} git clone https://github.com/ivanhitos/MAASJujuBuilder.git"
 do_cmd "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ubuntu@${IPMAAS1} nohup bash /home/ubuntu/MAASJujuBuilder/maas1.sh" 
+do_print "Continue on MAAS server: ${IPMAAS1}, that it will be changed to: ${FINALIPMAAS1}"
 
