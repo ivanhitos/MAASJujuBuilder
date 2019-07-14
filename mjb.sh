@@ -61,7 +61,6 @@ do_cmd "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ubuntu@$
 
 
 do_print "Disabling DHCP."
-sleep 200
 /usr/bin/virsh net-dumpxml default > default.xml
 /usr/bin/xmlstarlet edit --delete "/network/ip/dhcp" default.xml > default-new.xml
 sleep 5
