@@ -73,9 +73,9 @@ perl -pi -e ""s/XXXXX/$maaskey/g"" maas.yaml
 do_cmd "/snap/bin/juju add-credential myMAAS -f maas.yaml"
 do_cmd "/usr/bin/maas login ubuntu http://${FINALIPMAAS1}:5240/MAAS/ $maaskey"
 #do_cmd "maas ubuntu maas set-config name=http_proxy value=http://squid.internal:3128"
-do_cmd "/usr/bin/maas ubuntu ipranges create type=dynamic start_ip=${MAAS_STARTDHCP} end_ip=${MAAS_ENDDHCP} comment=\'This is a reserved dynamic range\'"
+do_cmd "/usr/bin/maas ubuntu ipranges create type=dynamic start_ip=${MAAS_STARTDHCP} end_ip=${MAAS_ENDDHCP} comment='This is a reserved dynamic range'"
 do_cmd "/usr/bin/maas ubuntu vlan update fabric-0 untagged dhcp_on=True primary_rack=maas1"
-do_cmd "/usr/bin/maas ubuntu boot-source-selections create 1 os=\'ubuntu\' release=\'bionic\' arches=\'amd64\' subarches=\'*\' labels=\'*\'"
+do_cmd "/usr/bin/maas ubuntu boot-source-selections create 1 os='ubuntu' release='bionic' arches='amd64' subarches='*' labels='*'"
 do_cmd "/usr/bin/maas ubuntu boot-resources import"
 
 
