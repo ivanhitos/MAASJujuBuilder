@@ -38,7 +38,7 @@ Example with proxy:
 
 # Description:
 
-It will create a Bionic VM called MAAS1 on "IPofMAAS" with the latest stable version of MAAS from the Ubuntu archives, the default subnet is 192.168.122.0/24 and it cannot be changed for now. MAAS will be accessible on ´http://IPofMAAS:5240/MAAS´ User: Ubuntu, PASS: "Password for MAAS". 
+It will create a Bionic VM called MAAS1 on "IPofMAAS" with the latest stable version of MAAS from the Ubuntu archives, the default subnet is 192.168.122.0/24 and it cannot be changed for now. MAAS will be accessible on `http://IPofMAAS:5240/MAAS` User: Ubuntu, PASS: "Password for MAAS". 
 
 It will bootstrap a Juju controller.
 
