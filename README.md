@@ -5,7 +5,7 @@ Scripts that install a MAAS VM on a baremetal server, then install a juju client
 # Requirements:
 
 - Internet connectivity to internet from host.
-
+- Sudo permissions on the host.
 
 # Installation:
 
