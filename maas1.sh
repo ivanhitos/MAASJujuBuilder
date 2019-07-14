@@ -32,7 +32,7 @@ network:
 
 \" > /etc/netplan/50-cloud-init.yaml" 
 
-do_print "MAAS1 changing IP to ${FINALIPMAAS1}. Connect to that IP and follow logs there."
+do_print "Changing IP to ${FINALIPMAAS1}. Connect to that IP and follow logs there."
 do_cmd "sudo netplan apply"
 
 
@@ -42,10 +42,14 @@ do_cmd "sudo netplan apply"
 # virsh net-define default.xml
 # virsh net-start default
 
+do_print "Installing MAAS..."
 do_cmd "sudo apt update"
 do_cmd "sudo apt install maas -y"
+do_print "Installing Juju..."
 do_cmd "sudo snap install juju --classic"
 
+
+do_print "Configuring MAAS and Juju..."
 
 echo " 
 clouds:
@@ -72,7 +76,12 @@ perl -pi -e ""s/XXXXX/$maaskey/g"" maas.yaml
 
 do_cmd "/snap/bin/juju add-credential myMAAS -f maas.yaml"
 do_cmd "/usr/bin/maas login ubuntu http://${FINALIPMAAS1}:5240/MAAS/ $maaskey"
-#do_cmd "maas ubuntu maas set-config name=http_proxy value=http://squid.internal:3128"
+
+if [ "${PROXY}." != "."]
+then
+	do_cmd "/usr/bin/maas ubuntu maas set-config name=http_proxy value=${PROXY}"
+
+fi
 do_cmd "/usr/bin/maas ubuntu ipranges create type=dynamic start_ip=${MAAS_STARTDHCP} end_ip=${MAAS_ENDDHCP} comment='This is a reserved dynamic range'"
 do_cmd "/usr/bin/maas ubuntu vlan update fabric-0 untagged dhcp_on=True primary_rack=maas1"
 do_cmd "/usr/bin/maas ubuntu boot-source-selections create 1 os='ubuntu' release='bionic' arches='amd64' subarches='*' labels='*'"
@@ -89,4 +98,5 @@ do
  sleep 10
 done
 
+do_print "Bootstraping the Juju Controller..."
 do_cmd "/snap/bin/juju bootstrap myMAAS myMAAS-controller --bootstrap-constraints \"mem=2G\""

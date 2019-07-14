@@ -1,18 +1,94 @@
 #!/bin/bash
 
-FINALIPMAAS1="192.168.122.3"
+# FINALIPMAAS1="192.168.122.3"
 GATEWAY="192.168.122.1"
 NETMASK="255.255.255.0"
 CIDR="24"
-DNS="192.168.122.1"
-PROXY=""
-LPUSERNAME="ivanhitos"
-PASSWORD="ubunturocks"
-MAAS_STARTDHCP="192.168.122.220"
-MAAS_ENDDHCP="192.168.122.250"
+# DNS="192.168.122.1"
+# PROXY=""
+# LPUSERNAME="ivanhitos"
+# PASSWORD="ubunturocks"
+# MAAS_STARTDHCP="192.168.122.220"
+# MAAS_ENDDHCP="192.168.122.250"
 QEMUHYPERVISOR_IP="192.168.122.1"
-QEMUHYPERVISOR_USER=ivan
+# QEMUHYPERVISOR_USER=ivan
 HOST=$(hostname)
+
+POSITIONAL=()
+while [[ $# -gt 0 ]]
+do
+    key="$1"
+
+    case $key in
+        --maas_ip)
+        FINALIPMAAS1="$2"
+        shift # past argument
+        shift # past value
+        ;;
+        # --maas_gateway)
+        # GATEWAY="$2"
+        # shift # past argument
+        # shift # past value
+        # ;;
+        # --maas_netmask)
+        # NETMASK="$2"
+        # shift # past argument
+        # shift # past value
+        # ;;
+        # --cidr)
+        # CIDR="$2"
+        # shift # past argument
+        # shift # past value
+        # ;;
+        --dns)
+        DNS="$2"
+        shift # past argument
+        shift # past value
+        ;;
+        --proxy)
+        PROXY="$2"
+        shift # past argument
+        shift # past value
+        ;;
+        --lpusername)
+        LPUSERNAME="$2"
+        shift # past argument
+        shift # past value
+        ;;
+        --maas_password)
+        PASSWORD="$2"
+        shift # past argument
+        shift # past value
+        ;;
+        --maas_startdhcp)
+        MAAS_STARTDHCP="$2"
+        shift # past argument
+        shift # past value
+        ;;
+        --maas_enddhcp)
+        MAAS_ENDDHCP="$2"
+        shift # past argument
+        shift # past value
+        ;;
+        --qemu_user)
+        QEMUHYPERVISOR_USER="$2"
+        shift # past argument
+        shift # past value
+        ;;
+        # --qemu_ip)
+        # QEMUHYPERVISOR_IP="$2"
+        # shift # past argument
+        # shift # past value
+        # ;;
+        *)    # unknown option
+        POSITIONAL+=("$1") # save it in an array for later
+        shift # past argument
+        ;;
+    esac
+
+
+done
+set -- "${POSITIONAL[@]}" # restore positional parameters
 
 
 
@@ -41,3 +117,19 @@ do_print()
 {
     echo -e "${GREEN} - ${HOST} - $(date) - ${LBLUE} $@ ${NC}" | tee -a ${LOG} 2>&1
 }
+
+do_print_error_exit()
+{
+    echo -e "${GREEN} - ${HOST} - $(date) - ${RED} Error: $@ ${NC}. Exiting." | tee -a ${LOG} 2>&1
+    exit 1
+}
+
+if [ ! -z $FINALIPMAAS1 ] || [ ! -z $DNS ] || [ ! -z $LPUSERNAME ] || [ ! -z $PASSWORD ] || [ ! -z $MAAS_STARTDHCP ] || [ ! -z $MAAS_ENDDHCP ] || [ ! -z $QEMUHYPERVISOR_USER ]
+then
+    do_print_error_exit "Missing arguments."
+fi
+
+if (( "${#POSITIONAL[@]}" != "0"))
+then     
+    do_print_error_exit "Incorrect number of arguments."
+fi
