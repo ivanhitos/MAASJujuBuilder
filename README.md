@@ -2,6 +2,11 @@
 
 Scripts that install a MAAS VM on a baremetal server, then install a juju client on the same VM and configure the basic setup, including bootstrapping a juju controller.
 
+# Requirements:
+
+- Internet connectivity to internet from host.
+
+
 # Installation:
 
 ```
