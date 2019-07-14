@@ -66,6 +66,7 @@ do_print "Disabling DHCP."
 do_cmd "/usr/bin/virsh net-destroy default"
 do_cmd "/usr/bin/virsh net-define default-new.xml"
 do_cmd "/usr/bin/virsh net-start default"
+do_cmd "/usr/bin/virsh reboot maas1"
 
 do_print_important "Installing MAAS components... Check logs on MAAS server: ${FINALIPMAAS1}"
 do_cmd "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ubuntu@${FINALIPMAAS1} nohup bash /home/ubuntu/MAASJujuBuilder/maas1.sh $ARGS" 
