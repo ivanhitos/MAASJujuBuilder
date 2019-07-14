@@ -124,7 +124,7 @@ do_print_error_exit()
     exit 1
 }
 
-if [ ! -z $FINALIPMAAS1 ] || [ ! -z $DNS ] || [ ! -z $LPUSERNAME ] || [ ! -z $PASSWORD ] || [ ! -z $MAAS_STARTDHCP ] || [ ! -z $MAAS_ENDDHCP ] || [ ! -z $QEMUHYPERVISOR_USER ]
+if [ -z $FINALIPMAAS1 ] || [ -z $DNS ] || [ -z $LPUSERNAME ] || [ -z $PASSWORD ] || [ -z $MAAS_STARTDHCP ] || [ -z $MAAS_ENDDHCP ] || [ -z $QEMUHYPERVISOR_USER ]
 then
     do_print_error_exit "Missing arguments."
 fi
