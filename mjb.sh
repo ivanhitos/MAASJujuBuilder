@@ -55,11 +55,11 @@ done
 do_print "MAAS1 is now reachable."
 
 do_print "Disabling DHCP."
-do_cmd "virsh net-dumpxml default > default.xml"
-do_cmd "xmlstarlet edit --delete \"/network/ip/dhcp\" default.xml > default-new.xml"
-do_cmd "virsh net-destroy default"
-do_cmd "virsh net-define default-new.xml"
-do_cmd "virsh net-start default"
+do_cmd "/usr/bin/virsh net-dumpxml default > default.xml"
+do_cmd "/usr/bin/xmlstarlet edit --delete \"/network/ip/dhcp\" default.xml > default-new.xml"
+do_cmd "/usr/bin/virsh net-destroy default"
+do_cmd "/usr/bin/virsh net-define default-new.xml"
+do_cmd "/usr/bin/virsh net-start default"
 
 
 do_print_important "Installing MAAS components... Check logs on MAAS server ${IPMAAS1}, that it will be changed to ${FINALIPMAAS1}"
