@@ -16,8 +16,6 @@ git clone https://github.com/ivanhitos/MAASJujuBuilder.git
 
 cd MAASJujuBuilder
 
-chmod 700 mjb.sh
-
 ./mjb.sh --maas_ip "IPofMAAS" --dns "DNSSERVERS" --proxy "ProxyIP" --lpusername "LaunchPad UserID" --maas_password "Password for MAAS" \
 --maas_startdhcp "FirstIPofDHCP" --maas_enddhcp "LastIPofDHCP"  --qemu_user "Qemu user for qemu+ssh"
 ```
