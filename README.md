@@ -45,7 +45,6 @@ It will bootstrap a Juju controller.
 
 
 # Still to do:
-- Disable DHCP from default subnet.
 - Add additional subnets and configure spaces.
 - Import Juju bundles.
 - Make more arguments optional
