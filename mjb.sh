@@ -55,7 +55,7 @@ done
 do_print "MAAS1 is now reachable."
 
 do_print "Disabling DHCP."
-do_cmd "(/usr/bin/virsh net-dumpxml default | tee default.xml)"
+do_cmd "/usr/bin/virsh net-dumpxml default | tee default.xml)"
 do_cmd "/usr/bin/xmlstarlet edit --delete \"/network/ip/dhcp\" default.xml | tee default-new.xml"
 do_cmd "/usr/bin/virsh net-destroy default"
 do_cmd "/usr/bin/virsh net-define default-new.xml"
