@@ -58,7 +58,7 @@ clouds:
 do_cmd "/snap/bin/juju add-cloud myMAAS cloud.yaml"
 
 do_cmd "sudo /usr/bin/maas createadmin --username=ubuntu --password=${PASSWORD} --email=root@localhost --ssh-import=lp:${LPUSERNAME}"
-maaskey=$(sudo /usr/bin/maas-region apikey --username=ubuntu)
+maaskey=$(sudo /usr/sbin/maas-region apikey --username=ubuntu)
 
 echo "
 credentials:
