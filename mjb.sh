@@ -68,6 +68,20 @@ do_cmd "/usr/bin/virsh net-define default-new.xml"
 do_cmd "/usr/bin/virsh net-start default"
 do_cmd "/usr/bin/virsh reboot maas1"
 
+do_print "Waiting for MAAS1. Pinging it..."
+
+sentinel=0
+while [ ${sentinel} -eq 0 ] 
+do
+        sleep 2
+        ping ${FINALIPMAAS1} -c 1 -W 3 > /dev/null 2>&1
+        if [ $? -eq 0 ]
+        then
+            sentinel=1
+        fi
+done
+sleep 10
+
 do_print_important "Installing MAAS components... Check logs on MAAS server: ${FINALIPMAAS1}"
 do_cmd "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ubuntu@${FINALIPMAAS1} nohup bash /home/ubuntu/MAASJujuBuilder/maas1.sh $ARGS" 
 do_print "Completed."
