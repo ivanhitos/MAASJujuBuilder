@@ -10,7 +10,6 @@ do_cmd "sudo apt update"
 do_cmd "sudo apt install python-pip -y"
 do_cmd "sudo pip install yq"
 do_cmd "sudo apt install jq -y"
-do_cmd "sudo apt install xmlstarlet -y"
 
 sudo bash -c "echo  'network: {config: disabled}' > /etc/cloud/cloud.cfg.d/99-disable-network-config.cfg"
 
@@ -36,12 +35,6 @@ network:
 do_print "Changing IP to ${FINALIPMAAS1}. Connect to that IP and follow logs there."
 do_cmd "sudo netplan apply"
 
-
-do_cmd "virsh net-dumpxml default > default.xml"
-xmlstarlet edit --delete "/network/ip/dhcp" default.xml > default-new.xml
-virsh net-destroy default
-virsh net-define default-new.xml
-virsh net-start default
 
 do_print "Installing MAAS..."
 do_cmd "sudo apt update"

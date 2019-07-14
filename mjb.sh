@@ -7,7 +7,8 @@ source $(dirname "$0")/common.sh
 
 
 do_cmd "sudo apt-get update -y"
-do_cmd "sudo apt-get install qemu-utils virtinst libvirt-bin qemu-kvm uvtool sshuttle -y"
+do_cmd "sudo apt-get install qemu-utils virtinst libvirt-bin qemu-kvm uvtool sshuttle xmlstarlet -y"
+
 
 sshagents=$(ssh-add -L|wc -l)
 if [ "${sshagents}." == "0." ]
@@ -52,6 +53,15 @@ do
 done
 
 do_print "MAAS1 is now reachable."
+
+do_print "Disabling DHCP."
+do_cmd "virsh net-dumpxml default > default.xml"
+do_cmd "xmlstarlet edit --delete \"/network/ip/dhcp\" default.xml > default-new.xml"
+do_cmd "virsh net-destroy default"
+do_cmd "virsh net-define default-new.xml"
+do_cmd "virsh net-start default"
+
+
 do_print_important "Installing MAAS components... Check logs on MAAS server ${IPMAAS1}, that it will be changed to ${FINALIPMAAS1}"
 do_cmd "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ubuntu@${IPMAAS1} git clone https://github.com/ivanhitos/MAASJujuBuilder.git"
 do_cmd "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ubuntu@${IPMAAS1} nohup bash /home/ubuntu/MAASJujuBuilder/maas1.sh $ARGS" 
