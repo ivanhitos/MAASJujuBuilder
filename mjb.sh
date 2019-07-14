@@ -54,17 +54,20 @@ done
 
 do_print "MAAS1 is now reachable."
 
+do_cmd "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ubuntu@${IPMAAS1} git clone https://github.com/ivanhitos/MAASJujuBuilder.git"
+
+do_print "Changing IP."
+do_cmd "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ubuntu@${IPMAAS1} nohup bash /home/ubuntu/MAASJujuBuilder/changeIPmaas1.sh $ARGS" 
+
+
 do_print "Disabling DHCP."
 /usr/bin/virsh net-dumpxml default > default.xml
 /usr/bin/xmlstarlet edit --delete "/network/ip/dhcp" default.xml > default-new.xml
-do_cmd "(sleep 100 && /usr/bin/virsh net-destroy default) &"
-do_cmd "(sleep 101 && /usr/bin/virsh net-define default-new.xml) &"
-do_cmd "(sleep 102 && /usr/bin/virsh net-start default) &"
+do_cmd "/usr/bin/virsh net-destroy default"
+do_cmd "/usr/bin/virsh net-define default-new.xml"
+do_cmd "/usr/bin/virsh net-start default"
 
-
-do_print_important "Installing MAAS components... Check logs on MAAS server ${IPMAAS1}, that it will be changed to ${FINALIPMAAS1}"
-do_cmd "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ubuntu@${IPMAAS1} git clone https://github.com/ivanhitos/MAASJujuBuilder.git"
-do_cmd "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ubuntu@${IPMAAS1} nohup bash /home/ubuntu/MAASJujuBuilder/changeIPmaas1.sh $ARGS" 
+do_print_important "Installing MAAS components... Check logs on MAAS server: ${FINALIPMAAS1}"
 do_cmd "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ubuntu@${FINALIPMAAS1} nohup bash /home/ubuntu/MAASJujuBuilder/maas1.sh $ARGS" 
-do_print "Continue on MAAS server: ${IPMAAS1}, that it will be changed to: ${FINALIPMAAS1}"
+do_print "Completed."
 
