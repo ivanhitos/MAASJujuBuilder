@@ -60,12 +60,15 @@ setfacl -m maas:rwx "$SSH_AUTH_SOCK" >> ${LOG} 2>&1
 echo "Setting permissions on file, exit code: $?"
 sudo -E -s -u maas -H sh -c "/usr/bin/ssh-keygen -f ~/.ssh/id_rsa -N '';/usr/bin/ssh-copy-id -i ~/.ssh/id_rsa -oStrictHostKeyChecking=no ${QEMUHYPERVISOR_USER}@${QEMUHYPERVISOR_IP}" >> ${LOG} 2>&1
 echo "Running SSH Copy and stuff, exit code: $?"
-do_cmd "/usr/bin/maas ubuntu pods create name=pod1 type=virsh power_address=qemu+ssh://${QEMUHYPERVISOR_USER}@${QEMUHYPERVISOR_IP}/system"
 
 while [ "$(/usr/bin/maas ubuntu boot-resources is-importing|tail -n 1)." != "false." ]
 do
  sleep 10
 done
+
+do_cmd "/usr/bin/maas ubuntu pods create name=pod1 type=virsh power_address=qemu+ssh://${QEMUHYPERVISOR_USER}@${QEMUHYPERVISOR_IP}/system"
+
+
 
 do_print "Bootstraping the Juju Controller..."
 /snap/bin/juju bootstrap myMAAS myMAAS-controller --bootstrap-constraints "mem=2G" >> ${LOG} 2>&1
