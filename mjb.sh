@@ -13,10 +13,7 @@ do_cmd "sudo apt-get install qemu-utils virtinst libvirt-bin qemu-kvm uvtool ssh
 sshagents=$(ssh-add -L|wc -l)
 if [ "${sshagents}." == "0." ]
 then
-  do_print "SSH Agent doesn't contain a key, we will create one."
-  do_cmd "ssh-keygen -f ~/.ssh/id_rsa -N ''" 
-else
-  do_print "SSH Agent contains a key, we will use that one."
+  do_print_error_exit "SSH Agent doesn't contain a key, please add the key."
 fi
 do_print "Synchronizing Bionic image, this will take time..."
 do_cmd "uvt-simplestreams-libvirt sync release=bionic arch=amd64"

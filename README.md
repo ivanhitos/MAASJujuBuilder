@@ -7,7 +7,7 @@ Scripts that install a MAAS VM on a baremetal server, then install a juju client
 
 - Internet connectivity to internet from host.
 - Sudo permissions on the host.
-
+- SSH Agent with the key that permits logins with qemu_user to the host
 
 # Installation:
 
