@@ -102,7 +102,7 @@ NC='\033[0m'
 
 do_cmd()
 {
-    echo -e "${GREEN} - ${HOST} - $(date) - ${LBLUE} Executing $@ ${NC}" | tee -a ${LOG} 2>&1
+    echo -e "${GREEN} - ${HOST} - $(date) - ${LBLUE} Executing: $@ ${NC}" | tee -a ${LOG} 2>&1
     $@  >> ${LOG} 2>&1
     ret=$?
 
