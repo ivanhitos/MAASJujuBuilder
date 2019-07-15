@@ -7,7 +7,9 @@ Scripts that install a MAAS VM on a baremetal server, then install a juju client
 
 - Internet connectivity to internet from host.
 - Sudo permissions on the host.
-- SSH Agent with the key that permits logins with qemu_user to the host
+- SSH Agent with the key that permits logins with qemu_user to the host.
+- Ideally it has be executed on an empty box, with only Bionic running.
+- If libvirtd is running, DHCP has to be enabled on the default network. And the "default" network must be on 192.168.122.0/24
 
 # Installation:
 

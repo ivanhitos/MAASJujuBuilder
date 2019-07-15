@@ -61,6 +61,7 @@ echo "Setting permissions on file, exit code: $?"
 sudo -E -s -u maas -H sh -c "/usr/bin/ssh-keygen -f ~/.ssh/id_rsa -N '';/usr/bin/ssh-copy-id -i ~/.ssh/id_rsa -oStrictHostKeyChecking=no ${QEMUHYPERVISOR_USER}@${QEMUHYPERVISOR_IP}" >> ${LOG} 2>&1
 echo "Running SSH Copy and stuff, exit code: $?"
 
+do_print "Waiting for images to be imported to MAAS .."
 while [ "$(/usr/bin/maas ubuntu boot-resources is-importing|tail -n 1)." != "false." ]
 do
  sleep 10
