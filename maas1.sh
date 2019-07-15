@@ -66,6 +66,7 @@ while [ "$(/usr/bin/maas ubuntu boot-resources is-importing|tail -n 1)." != "fal
 do
  sleep 10
 done
+sleep 100 # just some random wait... not sure why we have to wait here. it fails with "Ephemeral operating system ubuntu bionic is unavailable.""
 
 do_cmd "/usr/bin/maas ubuntu pods create name=pod1 type=virsh power_address=qemu+ssh://${QEMUHYPERVISOR_USER}@${QEMUHYPERVISOR_IP}/system"
 
