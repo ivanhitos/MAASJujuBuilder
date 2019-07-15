@@ -44,5 +44,6 @@ It will bootstrap a Juju controller.
 
 # Still to do:
 - Add additional subnets and configure spaces.
+- Improve do_cmd function.
 - Import Juju bundles.
 - Make more arguments optional

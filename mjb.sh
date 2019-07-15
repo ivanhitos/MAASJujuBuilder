@@ -89,6 +89,6 @@ done
 sleep 10
 
 do_print_important "Installing MAAS components... Check logs on MAAS server: ${FINALIPMAAS1}"
-do_cmd "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ubuntu@${FINALIPMAAS1} nohup bash /home/ubuntu/MAASJujuBuilder/maas1.sh $ARGS" 
+do_cmd "ssh -A -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ubuntu@${FINALIPMAAS1} nohup bash /home/ubuntu/MAASJujuBuilder/maas1.sh $ARGS" 
 do_print "Completed."
 
