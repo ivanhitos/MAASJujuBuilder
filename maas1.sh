@@ -68,4 +68,7 @@ do
 done
 
 do_print "Bootstraping the Juju Controller..."
-/snap/bin/juju bootstrap myMAAS myMAAS-controller --bootstrap-constraints "mem=2G"
+/snap/bin/juju bootstrap myMAAS myMAAS-controller --bootstrap-constraints "mem=2G" >> ${LOG} 2>&1
+echo "Controller bootstrap exited with code: $?" 
+
+#
