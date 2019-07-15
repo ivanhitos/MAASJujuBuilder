@@ -55,7 +55,7 @@ do_cmd "/usr/bin/maas ubuntu boot-resources import"
 
 setfacl -m maas:x   $(dirname "$SSH_AUTH_SOCK")
 setfacl -m maas:rwx "$SSH_AUTH_SOCK"
-sudo -E -s -u maas -H sh -c "/usr/bin/ssh-copy-id -i ~/.ssh/id_rsa -oStrictHostKeyChecking=no ${QEMUHYPERVISOR_USER}@${QEMUHYPERVISOR_IP}"
+sudo -E -s -u maas -H sh -c "/usr/bin/ssh-keygen -f ~/.ssh/id_rsa -N '';/usr/bin/ssh-copy-id -i ~/.ssh/id_rsa -oStrictHostKeyChecking=no ${QEMUHYPERVISOR_USER}@${QEMUHYPERVISOR_IP}"
 do_cmd "/usr/bin/maas ubuntu pods create name=pod1 type=virsh power_address=qemu+ssh://${QEMUHYPERVISOR_USER}@${QEMUHYPERVISOR_IP}/system"
 
 while [ "$(/usr/bin/maas ubuntu boot-resources is-importing|tail -n 1)." != "false." ]
