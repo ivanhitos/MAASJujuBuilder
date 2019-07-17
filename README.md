@@ -32,7 +32,7 @@ Example without proxy:
 Example with proxy:
 ```
 
-./mjb.sh --maas_ip "192.168.122.3" --dns "192.168.122.1" --proxy "squid.internal:3128" --lpusername "ivanhitos" --maas_password "ubuntu" \
+./mjb.sh --maas_ip "192.168.122.3" --dns "192.168.122.1" --proxy "http://squid.internal:3128" --lpusername "ivanhitos" --maas_password "ubuntu" \
 --maas_startdhcp "192.168.122.220" --maas_enddhcp "192.168.122.250" --qemu_user "ivan"
 ```
 
