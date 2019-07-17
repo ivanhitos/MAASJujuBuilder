@@ -50,6 +50,7 @@ do
 done
 
 do_print "MAAS1 is now reachable."
+sleep 10
 
 do_cmd "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ubuntu@${IPMAAS1} git clone https://github.com/ivanhitos/MAASJujuBuilder.git"
 
