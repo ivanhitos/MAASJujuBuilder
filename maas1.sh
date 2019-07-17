@@ -46,6 +46,8 @@ then
 	do_cmd "/usr/bin/maas ubuntu maas set-config name=http_proxy value=${PROXY}"
 
 fi
+/usr/bin/maas bogdan maas set-config name=upstream_dns value="${DNS}" >> ${LOG} 2>&1
+echo "Adding DNS upstream to MAAS, exit code: $?" 
 do_cmd "/usr/bin/maas ubuntu ipranges create type=dynamic start_ip=${MAAS_STARTDHCP} end_ip=${MAAS_ENDDHCP}"
 do_cmd "/usr/bin/maas ubuntu vlan update fabric-0 untagged dhcp_on=True primary_rack=maas1"
 do_cmd "/usr/bin/maas ubuntu boot-sources read"
