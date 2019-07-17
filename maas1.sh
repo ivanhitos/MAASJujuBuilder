@@ -70,7 +70,7 @@ sleep 100 # just some random wait... not sure why we have to wait here. it fails
 
 do_cmd "/usr/bin/maas ubuntu pods create name=pod1 type=virsh power_address=qemu+ssh://${QEMUHYPERVISOR_USER}@${QEMUHYPERVISOR_IP}/system"
 
-
+sleep 100 # just some random wait... not sure why we have to wait here. it fails with "Ephemeral operating system ubuntu bionic is unavailable.""
 
 do_print "Bootstraping the Juju Controller..."
 /snap/bin/juju bootstrap myMAAS myMAAS-controller --bootstrap-constraints "mem=2G" >> ${LOG} 2>&1
