@@ -70,8 +70,9 @@ sleep 100 # just some random wait... not sure why we have to wait here. it fails
 
 do_cmd "/usr/bin/maas ubuntu pods create name=pod1 type=virsh power_address=qemu+ssh://${QEMUHYPERVISOR_USER}@${QEMUHYPERVISOR_IP}/system"
 
-sleep 100 # just some random wait... not sure why we have to wait here. it fails with "Ephemeral operating system ubuntu bionic is unavailable.""
-
+# ERROR failed to bootstrap model: cannot start bootstrap instance: unexpected: 
+# ServerError: 400 Bad Request ({"distro_series": ["'bionic' is not a valid distro_series.  It should be one of: ''."]})
+sleep 100 
 do_print "Bootstraping the Juju Controller..."
 /snap/bin/juju bootstrap myMAAS myMAAS-controller --bootstrap-constraints "mem=2G" >> ${LOG} 2>&1
 echo "Controller bootstrap exited with code: $?" 
