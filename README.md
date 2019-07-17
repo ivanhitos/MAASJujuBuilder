@@ -42,6 +42,22 @@ It will create a Bionic VM called MAAS1 on "IPofMAAS" with the latest stable ver
 
 It will bootstrap a Juju controller.
 
+# If something fails:
+Destroy the maas1 vm
+```
+uvt-kvm destroy maas1
+```
+
+Re-add DHCP:
+```
+cd MAASJujuBuilder
+virsh net-destroy default
+/usr/bin/virsh net-define default.xml   # this backup by the execution of mjb.sh
+/usr/bin/virsh net-start default
+```
+
+Fix whatever failed and try the execution of ./mjb.sh again
+
 
 
 # Still to do:
