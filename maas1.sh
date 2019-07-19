@@ -73,6 +73,7 @@ done
 sleep 100 # just some random wait... not sure why we have to wait here. it fails with "Ephemeral operating system ubuntu bionic is unavailable.""
 
 do_cmd "/usr/bin/maas ubuntu pods create name=pod1 type=virsh power_address=qemu+ssh://${QEMUHYPERVISOR_USER}@${QEMUHYPERVISOR_IP}/system"
+do_cmd "/usr/bin/maas ubuntu pod update name=pod1 cpu_over_commit_ratio=8 memory_over_commit_ratio=10.0"
 
 # ERROR failed to bootstrap model: cannot start bootstrap instance: unexpected: 
 # ServerError: 400 Bad Request ({"distro_series": ["'bionic' is not a valid distro_series.  It should be one of: ''."]})
