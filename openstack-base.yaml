@@ -1,0 +1,232 @@
+variables:
+  openstack-origin:    &openstack-origin     cloud:xenial-ocata
+  mysql-connections:   &mysql-connections    1000
+  debug:               &debug                True
+  osd-devices:         &osd-devices          /dev/sdb /dev/vdb
+  expected-osd-count:  &expected-osd-count   3
+  expected-mon-count:  &expected-mon-count   3
+machines:
+  '0':
+    series: xenial
+    constraints: cores=2 mem=4096 root-disk=20480
+  '1':
+    series: xenial
+    constraints: cores=2 mem=4096 root-disk=20480
+  '2':
+    series: xenial
+    constraints: cores=2 mem=4096 root-disk=20480
+  '3':
+    series: xenial
+    constraints: cores=4 mem=8192 root-disk=40960
+  '4':
+    series: xenial
+    constraints: cores=4 mem=8192 root-disk=40960
+  '5':
+    series: xenial
+    constraints: cores=4 mem=8192 root-disk=40960
+relations:
+- - nova-compute:amqp
+  - rabbitmq-server:amqp
+- - neutron-gateway:amqp
+  - rabbitmq-server:amqp
+- - keystone:shared-db
+  - mysql:shared-db
+- - nova-cloud-controller:identity-service
+  - keystone:identity-service
+- - glance:identity-service
+  - keystone:identity-service
+- - neutron-api:identity-service
+  - keystone:identity-service
+- - neutron-openvswitch:neutron-plugin-api
+  - neutron-api:neutron-plugin-api
+- - neutron-api:shared-db
+  - mysql:shared-db
+- - neutron-api:amqp
+  - rabbitmq-server:amqp
+- - neutron-gateway:neutron-plugin-api
+  - neutron-api:neutron-plugin-api
+- - glance:shared-db
+  - mysql:shared-db
+- - glance:amqp
+  - rabbitmq-server:amqp
+- - nova-cloud-controller:image-service
+  - glance:image-service
+- - nova-compute:image-service
+  - glance:image-service
+- - nova-cloud-controller:cloud-compute
+  - nova-compute:cloud-compute
+- - nova-cloud-controller:amqp
+  - rabbitmq-server:amqp
+- - nova-cloud-controller:quantum-network-service
+  - neutron-gateway:quantum-network-service
+- - nova-compute:neutron-plugin
+  - neutron-openvswitch:neutron-plugin
+- - neutron-openvswitch:amqp
+  - rabbitmq-server:amqp
+- - openstack-dashboard:identity-service
+  - keystone:identity-service
+- - openstack-dashboard:shared-db
+  - mysql:shared-db
+- - nova-cloud-controller:shared-db
+  - mysql:shared-db
+- - nova-cloud-controller:neutron-api
+  - neutron-api:neutron-api
+- - cinder:image-service
+  - glance:image-service
+- - cinder:amqp
+  - rabbitmq-server:amqp
+- - cinder:identity-service
+  - keystone:identity-service
+- - cinder:cinder-volume-service
+  - nova-cloud-controller:cinder-volume-service
+- - cinder:shared-db
+  - mysql:shared-db
+- - ntp:juju-info
+  - nova-compute:juju-info
+- - ntp:juju-info
+  - neutron-gateway:juju-info
+- - cinder-ceph:storage-backend
+  - cinder:storage-backend
+- - ceph-mon:client
+  - nova-compute:ceph
+- - nova-compute:ceph-access
+  - cinder-ceph:ceph-access
+- - ceph-mon:client
+  - cinder-ceph:ceph
+- - ceph-mon:client
+  - glance:ceph
+- - ceph-osd:mon
+  - ceph-mon:osd
+- - ceph-radosgw:mon
+  - ceph-mon:radosgw
+- - ceph-radosgw:identity-service
+  - keystone:identity-service
+
+
+series: xenial
+services:
+  cinder:
+    charm: cs:cinder
+    num_units: 1
+    options:
+      block-device: None
+      glance-api-version: 2
+      openstack-origin: *openstack-origin
+    to:
+    - 'lxd:1'
+  cinder-ceph:
+    charm: cs:cinder-ceph
+    num_units: 0
+  glance:
+    charm: cs:glance
+    num_units: 1
+    options:
+      openstack-origin: *openstack-origin
+    to:
+    - 'lxd:2'
+  keystone:
+    charm: cs:keystone
+    num_units: 1
+    options:
+      openstack-origin: *openstack-origin
+    to:
+    - 'lxd:0'
+  mysql:
+    charm: cs:percona-cluster
+    num_units: 1
+    options:
+      max-connections: *mysql-connections
+      innodb-buffer-pool-size: 256M
+      performance-schema: True
+      root-password: ChangeMe123
+      sst-password: ChangeMe123
+    to:
+    - 'lxd:0'
+  neutron-api:
+    charm: cs:neutron-api
+    num_units: 1
+    options:
+      neutron-security-groups: true
+      flat-network-providers: physnet1
+      openstack-origin: *openstack-origin
+    to:
+    - 'lxd:1'
+  neutron-gateway:
+    charm: cs:neutron-gateway
+    num_units: 1
+    options:
+      bridge-mappings: physnet1:br-data
+      openstack-origin: *openstack-origin
+    to:
+    - '0'
+  neutron-openvswitch:
+    charm: cs:neutron-openvswitch
+    num_units: 0
+    options:
+      firewall-driver: openvswitch
+  nova-cloud-controller:
+    charm: cs:nova-cloud-controller
+    num_units: 1
+    options:
+      network-manager: Neutron
+      openstack-origin: *openstack-origin
+    to:
+    - 'lxd:2'
+  nova-compute:
+    charm: cs:nova-compute
+    num_units: 3
+    constraints: mem=4G
+    options:
+      config-flags: default_ephemeral_format=ext4
+      enable-live-migration: true
+      enable-resize: true
+      migration-auth-type: ssh
+      openstack-origin: *openstack-origin
+    to:
+    - '3'
+    - '4'
+    - '5'
+  ntp:
+    charm: cs:ntp
+    num_units: 0
+  openstack-dashboard:
+    charm: cs:openstack-dashboard
+    num_units: 1
+    options:
+      webroot: '/'
+      openstack-origin: *openstack-origin
+    to:
+    - 'lxd:3'
+  rabbitmq-server:
+    charm: cs:rabbitmq-server
+    num_units: 1
+    to:
+    - 'lxd:0'
+  ceph-mon:
+    charm: cs:ceph-mon
+    num_units: 3
+    options:
+      expected-osd-count: *expected-osd-count
+      monitor-count: *expected-mon-count
+      source: *openstack-origin
+    to:
+    - 'lxd:0'
+    - 'lxd:1'
+    - 'lxd:2'
+  ceph-osd:
+    charm: cs:ceph-osd
+    num_units: 3
+    options:
+      osd-devices: *osd-devices
+      source: *openstack-origin
+    to:
+    - '0'
+    - '1'
+    - '2'
+  ceph-radosgw:
+    charm: cs:ceph-radosgw
+    num_units: 1
+    options:
+      source: *openstack-origin
+    to:
+    - 'lxd:0'
