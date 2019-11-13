@@ -46,10 +46,13 @@ then
 	do_cmd "/usr/bin/maas ubuntu maas set-config name=http_proxy value=${PROXY}"
 
 fi
-/usr/bin/maas bogdan maas set-config name=upstream_dns value="${DNS}" >> ${LOG} 2>&1
-echo "Adding DNS upstream to MAAS, exit code: $?" 
+do_print "Adding DNS..."
+do_cmd "/usr/bin/maas ubuntu maas set-config name=upstream_dns value=${DNS}"
+do_print "Setting DHCP Pool..."
 do_cmd "/usr/bin/maas ubuntu ipranges create type=dynamic start_ip=${MAAS_STARTDHCP} end_ip=${MAAS_ENDDHCP}"
 do_cmd "/usr/bin/maas ubuntu vlan update fabric-0 untagged dhcp_on=True primary_rack=maas1"
+
+do_print "Importing images to MAAS..."
 do_cmd "/usr/bin/maas ubuntu boot-sources read"
 sleep 30 
 /usr/bin/maas ubuntu boot-source-selections create 1 os=\'ubuntu\' release=\'bionic\' arches=\'amd64\' subarches=\'*\' labels=\'*\' >> ${LOG} 2>&1
@@ -72,6 +75,7 @@ do
 done
 sleep 100 # just some random wait... not sure why we have to wait here. it fails with "Ephemeral operating system ubuntu bionic is unavailable.""
 
+do_print "Creating Pods..."
 do_cmd "/usr/bin/maas ubuntu pods create name=pod1 type=virsh power_address=qemu+ssh://${QEMUHYPERVISOR_USER}@${QEMUHYPERVISOR_IP}/system"
 do_cmd "/usr/bin/maas ubuntu pod update name=pod1 cpu_over_commit_ratio=8 memory_over_commit_ratio=10.0"
 
