@@ -48,6 +48,8 @@ then
 fi
 do_print "Adding DNS..."
 do_cmd "/usr/bin/maas ubuntu maas set-config name=upstream_dns value=${DNS}"
+do_print "Removing DNS Sec..."
+do_cmd "/usr/bin/maas ubuntu maas set-config name=dnssec_validation value=no"
 do_print "Setting DHCP Pool..."
 do_cmd "/usr/bin/maas ubuntu ipranges create type=dynamic start_ip=${MAAS_STARTDHCP} end_ip=${MAAS_ENDDHCP}"
 do_cmd "/usr/bin/maas ubuntu vlan update fabric-0 untagged dhcp_on=True primary_rack=maas1"
