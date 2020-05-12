@@ -73,6 +73,9 @@ sleep 5
 do_cmd "/usr/bin/virsh start maas1"
 
 do_print "Waiting for MAAS1. Pinging it..."
+do_print "... in the meantime configuring additional networks"
+do_cmd "/usr/bin/virsh net-define overlay.xml"
+do_cmd "/usr/bin/virsh net-start overlay"
 
 sentinel=0
 while [ ${sentinel} -eq 0 ] 

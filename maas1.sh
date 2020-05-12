@@ -23,7 +23,7 @@ clouds:
         endpoint: http://${FINALIPMAAS1}:5240/MAAS
 " > cloud.yaml
 
-do_cmd "/snap/bin/juju add-cloud myMAAS cloud.yaml"
+do_cmd "/snap/bin/juju add-cloud --client  myMAAS cloud.yaml"
 
 do_cmd "sudo /usr/bin/maas createadmin --username=ubuntu --password=${PASSWORD} --email=root@localhost --ssh-import=lp:${LPUSERNAME}"
 maaskey=$(sudo /usr/sbin/maas-region apikey --username=ubuntu)
