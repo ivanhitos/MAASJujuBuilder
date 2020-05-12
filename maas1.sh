@@ -53,6 +53,11 @@ do_cmd "/usr/bin/maas ubuntu maas set-config name=dnssec_validation value=no"
 do_print "Setting DHCP Pool..."
 do_cmd "/usr/bin/maas ubuntu ipranges create type=dynamic start_ip=${MAAS_STARTDHCP} end_ip=${MAAS_ENDDHCP}"
 do_cmd "/usr/bin/maas ubuntu vlan update fabric-0 untagged dhcp_on=True primary_rack=maas1"
+do_print "Creating spaces..."
+do_cmd "/usr/bin/maas ubuntu space create overlay-space"
+overlay_id=$(maas ubuntu subnets read | jq '.[] | select(.name == "overlay") | .id')
+oam_id=$(maas ubuntu subnets read | jq '.[] | select(.name == "default") | .id')
+do_cmd "/usr/bin/maas ubuntu space create oam-space"
 
 do_print "Importing images to MAAS..."
 do_cmd "/usr/bin/maas ubuntu boot-sources read"
