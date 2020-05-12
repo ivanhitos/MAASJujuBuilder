@@ -18,7 +18,7 @@ fi
 do_print "Synchronizing Bionic image, this will take time..."
 do_cmd "uvt-simplestreams-libvirt sync release=bionic arch=amd64"
 do_print "Synchronization of Bionic image, completed."
-do_cmd "uvt-kvm create --cpu 1 --memory 2048 --disk 40 maas1"
+do_cmd "uvt-kvm create --cpu 1 --memory 4096 --disk 40 maas1"
 do_print "Discovering MAAS1 IP..."
 
 IPMAAS1_COMMAND="/usr/bin/uvt-kvm ip maas1"
