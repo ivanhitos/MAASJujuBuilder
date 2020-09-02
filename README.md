@@ -19,21 +19,21 @@ git clone https://github.com/ivanhitos/MAASJujuBuilder.git
 cd MAASJujuBuilder
 
 ./mjb.sh --maas_ip "IPofMAAS" --dns "DNSSERVERS" --proxy "ProxyIP" --lpusername "LaunchPad UserID" --maas_password "Password for MAAS" \
---maas_startdhcp "FirstIPofDHCP" --maas_enddhcp "LastIPofDHCP"  --qemu_user "Qemu user for qemu+ssh"
+--maas_startdhcp "FirstIPofDHCP" --maas_enddhcp "LastIPofDHCP"  --qemu_user "Qemu user for qemu+ssh" --release "bionic"
 ```
 
 Example without proxy:
 ```
 
 ./mjb.sh --maas_ip "192.168.122.3" --dns "192.168.122.1" --lpusername "ivanhitos" --maas_password "ubuntu" \
---maas_startdhcp "192.168.122.220" --maas_enddhcp "192.168.122.250" --qemu_user "ivan"
+--maas_startdhcp "192.168.122.220" --maas_enddhcp "192.168.122.250" --qemu_user "ivan" --release "bionic"
 ```
 
 Example with proxy:
 ```
 
 ./mjb.sh --maas_ip "192.168.122.3" --dns "192.168.122.1" --proxy "http://squid.internal:3128" --lpusername "ivanhitos" --maas_password "ubuntu" \
---maas_startdhcp "192.168.122.220" --maas_enddhcp "192.168.122.250" --qemu_user "ubuntu"
+--maas_startdhcp "192.168.122.220" --maas_enddhcp "192.168.122.250" --qemu_user "ubuntu" --release "bionic"
 ```
 
 # Description:
