@@ -25,6 +25,11 @@ do
         shift # past argument
         shift # past value
         ;;
+        --release)
+        RELEASE="$2"
+        shift # past argument
+        shift # past value
+        ;;
         # --maas_gateway)
         # GATEWAY="$2"
         # shift # past argument
