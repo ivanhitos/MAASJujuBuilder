@@ -54,10 +54,11 @@ do_print "Setting DHCP Pool..."
 do_cmd "/usr/bin/maas ubuntu ipranges create type=dynamic start_ip=${MAAS_STARTDHCP} end_ip=${MAAS_ENDDHCP}"
 do_cmd "/usr/bin/maas ubuntu vlan update fabric-0 untagged dhcp_on=True primary_rack=maas1"
 do_print "Creating spaces..."
-do_cmd "/usr/bin/maas ubuntu space create overlay-space"
+do_cmd "/usr/bin/maas ubuntu spaces create -name=overlay-space"
 overlay_id=$(maas ubuntu subnets read | jq '.[] | select(.name == "overlay") | .id')
 oam_id=$(maas ubuntu subnets read | jq '.[] | select(.name == "default") | .id')
 do_cmd "/usr/bin/maas ubuntu space create oam-space"
+do_cmd "/usr/bin/maas ubuntu spaces create name=oam-space"
 
 do_print "Importing images to MAAS..."
 do_cmd "/usr/bin/maas ubuntu boot-sources read"
@@ -84,7 +85,7 @@ sleep 100 # just some random wait... not sure why we have to wait here. it fails
 
 do_print "Creating Pods..."
 do_cmd "/usr/bin/maas ubuntu pods create name=pod1 type=virsh power_address=qemu+ssh://${QEMUHYPERVISOR_USER}@${QEMUHYPERVISOR_IP}/system"
-do_cmd "/usr/bin/maas ubuntu pod update name=pod1 cpu_over_commit_ratio=8 memory_over_commit_ratio=10.0"
+do_cmd "/usr/bin/maas ubuntu pod update 1 name=pod1 cpu_over_commit_ratio=8 memory_over_commit_ratio=10.0"
 
 # ERROR failed to bootstrap model: cannot start bootstrap instance: unexpected: 
 # ServerError: 400 Bad Request ({"distro_series": ["'bionic' is not a valid distro_series.  It should be one of: ''."]})
