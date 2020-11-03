@@ -9,6 +9,7 @@ source $(dirname "$0")/common.sh
 do_cmd "sudo apt-get update -y"
 do_cmd "sudo apt-get install qemu-utils virtinst libvirt-bin qemu-kvm uvtool sshuttle xmlstarlet -y"
 source ${HOME}/.profile
+newgrp -
 
 sshagents=$(ssh-add -L|wc -l)
 if [ "${sshagents}." == "0." ]
