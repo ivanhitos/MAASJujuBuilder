@@ -9,7 +9,6 @@ source $(dirname "$0")/common.sh
 do_cmd "sudo apt-get update -y"
 do_cmd "sudo apt-get install qemu-utils virtinst libvirt-bin qemu-kvm uvtool sshuttle xmlstarlet -y"
 source ${HOME}/.profile
-newgrp -
 
 sshagents=$(ssh-add -L|wc -l)
 if [ "${sshagents}." == "0." ]
@@ -22,7 +21,7 @@ do_print "Synchronization of Bionic image, completed."
 do_cmd_as_libvirt "uvt-kvm create --cpu 1 --memory 4096 --disk 40 maas1 release=${RELEASE}"
 do_print "Discovering MAAS1 IP..."
 
-IPMAAS1_COMMAND="/usr/bin/uvt-kvm ip maas1"
+IPMAAS1_COMMAND="sudo su - $USER -c "/usr/bin/uvt-kvm ip maas1"
 
 sentinel=0
 while [ ${sentinel} -eq 0 ] 
