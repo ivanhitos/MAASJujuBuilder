@@ -93,5 +93,10 @@ sleep 100
 do_print "Bootstraping the Juju Controller..."
 /snap/bin/juju bootstrap myMAAS myMAAS-controller --bootstrap-constraints "mem=2G" >> ${LOG} 2>&1
 echo "Controller bootstrap exited with code: $?" 
-
+do_print "Getting STSSTACK Bundles..."
+cd $HOME
+git clone https://git.launchpad.net/stsstack-bundles
+do_print "Next.: generate bundle; modify placement-units and deploy."
+do_print "./generate-bundle.sh  --default-binding oam-space -s bionic -r train  --hyperconverged --use-stable-charms"
+do_print "vim ./b/unit-placement.yaml to establish contraints as: constraints: 'mem=14G cores=4 root-disk=100G'"
 #
