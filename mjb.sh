@@ -21,7 +21,7 @@ do_print "Synchronization of Bionic image, completed."
 do_cmd_as_libvirt "uvt-kvm create --cpu 1 --memory 4096 --disk 40 maas1 release=${RELEASE}"
 do_print "Discovering MAAS1 IP..."
 
-IPMAAS1_COMMAND="sudo su - $USER -c "/usr/bin/uvt-kvm ip maas1"
+IPMAAS1_COMMAND="do_cms_as_libvirt \"/usr/bin/uvt-kvm ip maas1\""
 
 sentinel=0
 while [ ${sentinel} -eq 0 ] 
