@@ -127,6 +127,7 @@ $@  >> ${LOG} 2>&1
 ret=$?
 echo $ret
 END
+return $ret
 }
 
 do_print()
