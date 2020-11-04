@@ -38,7 +38,7 @@ credentials:
 
 perl -pi -e ""s/XXXXX/$maaskey/g"" maas.yaml
 
-do_cmd "/snap/bin/juju add-credential myMAAS -f maas.yaml"
+do_cmd "/snap/bin/juju add-credential myMAAS -f maas.yaml --client"
 do_cmd "/usr/bin/maas login ubuntu http://${FINALIPMAAS1}:5240/MAAS/ $maaskey"
 
 if [ "${PROXY}." != "." ]

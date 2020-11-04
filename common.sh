@@ -120,6 +120,15 @@ do_cmd()
     fi
 }
 
+do_cmd_as_libvirt()
+{
+newgrp libvirt << END
+$@  >> ${LOG} 2>&1
+ret=$?
+echo $ret
+END
+}
+
 do_print()
 {
     echo -e "${GREEN} - ${HOST} - $(date) - ${LBLUE} $@ ${NC}" | tee -a ${LOG} 2>&1
